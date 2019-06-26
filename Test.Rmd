@@ -1,0 +1,41 @@
+---
+title: "Test"
+output: html_document
+---
+
+```{r}
+#install.packages(read_excel)
+##importing the data from excel sheet
+library(readxl)
+StatDesc <- read_excel(file.choose()) 
+```
+
+```{r}
+##install.packages(pastecs)
+library(pastecs)
+###USING THE BY function to caculate the basic statistics of the amount by year
+res<-by(StatDesc$Amount,StatDesc$year,  stat.desc,basic=T)
+##append the result of each year in a data frame
+byyear<-cbind.data.frame(res$`2014`,res$`2015`,res$`2016`,res$`2017`,res$`2018`)
+##fixing the column names
+names(byyear)<-c("2014","2015","2016","2017","2018")
+##printing the values rounded 
+round(byyear,2)
+```
+
+```{r}
+##selecting the values of year 2018 and the first 5 months of it
+new<-StatDesc[which(StatDesc$year=='2018' & StatDesc$Month<=5),]
+##USING THE BY function to caculate the basic statistics of the amount by month in year 2018
+res1<-by(new$Amount,new$Month,  stat.desc,basic=T)
+##append the result of each month in a data frame
+bymonth<-cbind.data.frame(res1$`1`,res1$`2`,res1$`3`,res1$`4`,res1$`5`)
+##fixing the column names
+names(bymonth)<-c('1','2','3','4','5')
+#printing the values rounded
+round(bymonth,2)
+```
+
+
+
+
